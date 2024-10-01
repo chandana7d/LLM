@@ -94,11 +94,33 @@ def plot_speed_comparison(speed_data):
     methods = list(speed_data.keys())
     times = [speed_data[method] for method in methods]
 
-    ax.barh(methods, times, color='skyblue')
-    ax.set_title('Speed Comparison of MHA Methods')
-    ax.set_xlabel('Time (seconds)')
-    ax.set_ylabel('MHA Method')
-    ax.grid(axis='x')
+    bars = ax.bar(methods, times, color='skyblue', edgecolor='black', linewidth=1.5)
+
+    # Add labels on top of the bars
+    for bar in bars:
+        yval = bar.get_height()
+        ax.text(bar.get_x() + bar.get_width() / 2, yval, f'{yval:.2f}',
+                ha='center', va='bottom', fontsize=10, color='black')
+
+    # Set titles and labels with a larger font size
+    ax.set_title('Speed Comparison of MHA Methods', fontsize=16, fontweight='bold')
+    ax.set_ylabel('Time (seconds)', fontsize=14)
+    ax.set_xlabel('MHA Method', fontsize=14)
+
+    # Rotate x-axis labels for better readability
+    plt.xticks(rotation=45, ha='right')
+
+    # Enhance gridlines
+    ax.grid(axis='y', linestyle='--', alpha=0.7)
+    ax.set_ylim(0, max(times) * 1.1)  # Add some space above the highest bar
+
+    # Add a background color
+    fig.patch.set_facecolor('lightgrey')
+
+    # Add a tight layout for better spacing
+    plt.tight_layout()
+
+    # Save the plot
     save_plot(fig, 'speed_comparison_plot.png')
 
 
