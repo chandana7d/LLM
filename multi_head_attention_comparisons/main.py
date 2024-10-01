@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+import plots
 
 # Import the MHA classes
 from models.causal_attention import Ch03_MHA_Wrapper
@@ -94,3 +95,4 @@ mha_pytorch_scaled = MHAPyTorchScaledDotProduct(
 # Forward pass through the PyTorch Scaled Dot Product MHA
 out_scaled_dot_product = mha_pytorch_scaled(embeddings)
 print(f"MHA PyTorch Scaled Dot Product Output Shape: {out_scaled_dot_product.shape}")  # Should be (batch_size, context_len, embed_dim)
+
