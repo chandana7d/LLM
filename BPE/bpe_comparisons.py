@@ -24,7 +24,7 @@ def compare_bpe_methods(raw_text):
     start_time = time.time()
     orig_integers = orig_tokenizer.encode(raw_text)
     orig_decoded = orig_tokenizer.decode(orig_integers)
-    results['original_bpe'] = (orig_integers, (time.time() - start_time) * 1000)
+    results['openai_gpt_bpe'] = (orig_integers, (time.time() - start_time) * 1000)
 
     # Using Hugging Face transformers
     start_time = time.time()
