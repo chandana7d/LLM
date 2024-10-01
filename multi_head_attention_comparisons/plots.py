@@ -1,14 +1,17 @@
 import os
 import matplotlib.pyplot as plt
 import numpy as np
+import time  # Import time for measuring execution duration
 
 # Create output directory if it doesn't exist
 output_dir = 'output'
 os.makedirs(output_dir, exist_ok=True)
 
+
 def save_plot(fig, filename):
     fig.savefig(os.path.join(output_dir, filename))
     plt.close(fig)
+
 
 def plot_mean_std(outputs):
     fig, ax = plt.subplots(figsize=(12, 8))
@@ -30,6 +33,7 @@ def plot_mean_std(outputs):
     ax.grid()
     save_plot(fig, 'mean_std_plot.png')
 
+
 def plot_histogram(outputs):
     fig, ax = plt.subplots(figsize=(12, 8))
 
@@ -44,6 +48,7 @@ def plot_histogram(outputs):
     ax.grid()
     save_plot(fig, 'histogram_plot.png')
 
+
 def plot_boxplot(outputs):
     fig, ax = plt.subplots(figsize=(12, 8))
     data = [output.detach().cpu().numpy().flatten() for output in outputs.values()]
@@ -53,6 +58,7 @@ def plot_boxplot(outputs):
     ax.set_ylabel('Output Value')
     ax.grid()
     save_plot(fig, 'boxplot.png')
+
 
 def plot_line_chart(outputs):
     fig, ax = plt.subplots(figsize=(12, 8))
@@ -67,6 +73,7 @@ def plot_line_chart(outputs):
     ax.grid()
     save_plot(fig, 'line_chart_plot.png')
 
+
 def plot_heatmap(outputs):
     fig, ax = plt.subplots(figsize=(12, 8))
 
@@ -79,6 +86,21 @@ def plot_heatmap(outputs):
         ax.set_ylabel('Token Index')
         save_plot(fig, f'heatmap_{name}.png')
         ax.cla()  # Clear axis for the next iteration
+
+
+def plot_speed_comparison(speed_data):
+    fig, ax = plt.subplots(figsize=(12, 8))
+
+    methods = list(speed_data.keys())
+    times = [speed_data[method] for method in methods]
+
+    ax.barh(methods, times, color='skyblue')
+    ax.set_title('Speed Comparison of MHA Methods')
+    ax.set_xlabel('Time (seconds)')
+    ax.set_ylabel('MHA Method')
+    ax.grid(axis='x')
+    save_plot(fig, 'speed_comparison_plot.png')
+
 
 import torch
 import torch.nn as nn
@@ -146,15 +168,23 @@ mha_methods = {
 }
 
 outputs = {}  # Initialize the outputs dictionary
+speed_data = {}  # Initialize the speed data dictionary
 
-# Forward pass through each MHA method and collect outputs
+# Forward pass through each MHA method and collect outputs and execution time
 for name, mha in mha_methods.items():
+    start_time = time.time()  # Start timing
     out = mha(embeddings)  # Forward pass
+    elapsed_time = time.time() - start_time  # Calculate elapsed time
+
     outputs[name] = out  # Store the output
+    speed_data[name] = elapsed_time  # Store the execution time
 
 # Call the plotting functions
-plots.plot_mean_std(outputs)      # Mean and std plot
-plots.plot_histogram(outputs)      # Histogram plot
-plots.plot_boxplot(outputs)        # Boxplot
-plots.plot_line_chart(outputs)     # Line chart
-plots.plot_heatmap(outputs)        # Heatmap
+plots.plot_mean_std(outputs)  # Mean and std plot
+plots.plot_histogram(outputs)  # Histogram plot
+plots.plot_boxplot(outputs)  # Boxplot
+plots.plot_line_chart(outputs)  # Line chart
+plots.plot_heatmap(outputs)  # Heatmap
+plots.plot_speed_comparison(speed_data)  # Speed comparison plot
+
+
