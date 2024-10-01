@@ -9,6 +9,7 @@ def main():
 
     # Compare BPE methods
     results = compare_bpe_methods(raw_text)
+    print(results.keys())
 
     # Create a comparison table
     table = PrettyTable()
