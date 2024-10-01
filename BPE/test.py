@@ -6,7 +6,7 @@ from data import load_raw_text
 class TestBPEComparisons(unittest.TestCase):
 
     def setUp(self):
-        self.raw_text = load_raw_text('../01_main-chapter-code/the-verdict.txt')
+        self.raw_text = load_raw_text('data/the-verdict.txt')
 
     def test_compare_bpe_methods(self):
         results = compare_bpe_methods(self.raw_text)
