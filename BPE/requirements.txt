@@ -1,0 +1,7 @@
+tiktoken==0.5.1
+#bpe_openai_gpt2  # You may need to install this from its repository
+transformers==4.34.0
+requests
+regex
+tqdm
+prettytable
